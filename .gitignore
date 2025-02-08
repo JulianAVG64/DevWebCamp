@@ -1,0 +1,11 @@
+# Ignorar node_modules (generado por npm install)
+node_modules/
+
+# Ignorar vendor (generado por composer install)
+vendor/
+
+# Gulp
+public/build/
+
+# Ignorar archivos de entorno (sensibles)
+includes/.env
