@@ -65,4 +65,4 @@
             tagsInputHidden.value = tags.toString();
         }
     }
-})() // IIFE
+})(); // IIFE
