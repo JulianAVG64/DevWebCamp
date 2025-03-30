@@ -19,6 +19,16 @@
         function terminoBusqueda(e) {
             busqueda[e.target.name] = e.target.value
 
+            // Reiniciar los campos ocultos y el selector de horas
+            inputHiddenHora.value = '';
+            inputHiddenDia.value = '';
+
+            // Reiniciar selección de horas
+            const horaPrevia = document.querySelector('.horas__hora--seleccionada')
+            if(horaPrevia) {
+                horaPrevia.classList.remove('horas__hora--seleccionada')
+            }
+
             // Prevenir llamar a la API con el objeto incompleto
             if(Object.values(busqueda).includes('')) {
                 return
@@ -38,10 +48,13 @@
         }
         
         function obtenerHorasDisponibles(eventos) {
-            // Comprobar eventos ya tomados, y quitar la variable de deshabilitado
-
-            const horasTomadas = eventos.map( evento => evento.hora_id)
+            // Reiniciar las horas
             const listadoHoras = document.querySelectorAll('#horas li')
+            listadoHoras.forEach( li => li.classList.add('horas__hora--deshabilitada'))
+
+            // Comprobar eventos ya tomados, y quitar la variable de deshabilitado
+            const horasTomadas = eventos.map( evento => evento.hora_id)
+            
             // Covertir listadoHoras en un arreglo para usar la función filter
             const listadoHorasArray = Array.from(listadoHoras)
             // Filtrar horas que no esten ocupadas
@@ -67,6 +80,9 @@
             e.target.classList.add('horas__hora--seleccionada')
 
             inputHiddenHora.value = e.target.dataset.horaId
+
+            // Llenar el campo oculto de día
+            inputHiddenDia.value = document.querySelector('[name="dia"]:checked').value
         }
     }
 })();
