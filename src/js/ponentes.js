@@ -5,7 +5,11 @@
         let ponentes = []
         let ponentesFiltrados = []
 
+        const listadoPonentes = document.querySelector('#listado-ponentes')
+
         obtenerPonenetes();
+
+        ponentesInput.addEventListener('input', buscarPonentes)
 
         async function obtenerPonenetes() {
             const url = `/api/ponentes`
@@ -23,8 +27,51 @@
                     id: ponente.id
                 }
             })
+        }
 
-            console.log(ponentes)
+        function buscarPonentes(e) {
+            const busqueda = e.target.value
+
+            if(busqueda.length > 3) {
+                // Expresión regular
+                const expresion = new RegExp(busqueda, "i")
+                ponentesFiltrados = ponentes.filter(ponente => {
+                    if(ponente.nombre.toLowerCase().search(expresion) != -1) {
+                        return ponente
+                    }
+                })
+            } else {
+                ponentesFiltrados = []
+            }
+
+            mostrarPonentes();
+        }
+
+        function mostrarPonentes() {
+
+            // Limpiar listado de ponentes
+            while (listadoPonentes.firstChild) {
+                listadoPonentes.removeChild(listadoPonentes.firstChild)
+            }
+
+            if(ponentesFiltrados.length > 0) {
+                ponentesFiltrados.forEach( ponente => {
+                    const ponenteHTML = document.createElement('LI');
+                    ponenteHTML.classList.add('listado-ponentes__ponente')
+                    ponenteHTML.textContent = ponente.nombre
+                    ponenteHTML.dataset.ponenteId = ponente.id
+    
+                    // Añadir al DOM
+                    listadoPonentes.appendChild(ponenteHTML)
+                })
+            } else {
+                const noResultados = document.createElement('P')
+                noResultados.classList.add('listado__ponentes--no-resultado')
+                noResultados.textContent = 'No hay resultados para tu búsqueda'
+
+                listadoPonentes.appendChild(noResultados)
+            }
+
         }
     }
 })();
