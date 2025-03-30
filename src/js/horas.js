@@ -34,12 +34,24 @@
 
             const resultado = await fetch(url);
             const eventos = await resultado.json();
-
-            obtenerHorasDisponibles();
+            obtenerHorasDisponibles(eventos);
         }
         
-        function obtenerHorasDisponibles() {
-            const horasDisponibles = document.querySelectorAll('#horas li')
+        function obtenerHorasDisponibles(eventos) {
+            // Comprobar eventos ya tomados, y quitar la variable de deshabilitado
+
+            const horasTomadas = eventos.map( evento => evento.hora_id)
+            const listadoHoras = document.querySelectorAll('#horas li')
+            // Covertir listadoHoras en un arreglo para usar la función filter
+            const listadoHorasArray = Array.from(listadoHoras)
+            // Filtrar horas que no esten ocupadas
+            const resultado = listadoHorasArray.filter( li => !horasTomadas.includes(li.dataset.horaId))
+
+            // Hacer visibles las horas disponibles
+            resultado.forEach( li => li.classList.remove('horas__hora--deshabilitada'))
+
+            // Tomar las horas disponibles con un selector de css
+            const horasDisponibles = document.querySelectorAll('#horas li:not(.horas__hora--deshabilitada)')
             horasDisponibles.forEach( hora => hora.addEventListener('click', seleccionarHora))
         }
 
