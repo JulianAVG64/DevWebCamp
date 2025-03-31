@@ -12,13 +12,34 @@
 
         ponentesInput.addEventListener('input', buscarPonentes)
 
+        // Si ya existe un valor en ponenteHidden significa que es para actualizar
+        if(ponenteHidden.value) {
+            // Función asincrona para buscar al ponente con el id del campo oculto
+            (async() => {
+                const ponente = await obtenerPonenete(ponenteHidden.value)
+                const { nombre, apellido } = ponente
+
+                // Insertar en el HTML
+                const ponenteDOM = document.createElement('LI');
+                ponenteDOM.classList.add('listado-ponentes__ponente', 'listado-ponentes__ponente--seleccionado')
+                ponenteDOM.textContent = `${nombre} ${apellido}`
+
+                listadoPonentes.appendChild(ponenteDOM)
+            })()
+        }
+
         async function obtenerPonenetes() {
             const url = `/api/ponentes`
-
-            const respuesta = await fetch(url);
-            const resultado = await respuesta.json();
-
+            const respuesta = await fetch(url)
+            const resultado = await respuesta.json()
             formatearPonentes(resultado)
+        }
+
+        async function obtenerPonenete(id) {
+            const url = `/api/ponente?id=${id}`
+            const respuesta = await fetch(url)
+            const resultado = await respuesta.json()
+            return resultado
         }
 
         function formatearPonentes(arrayPonentes = []) {
