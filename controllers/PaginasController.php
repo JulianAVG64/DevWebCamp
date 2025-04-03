@@ -56,11 +56,11 @@ class PaginasController {
 
             // Día viernes categoría workshops
             if($evento->dia_id === "1" && $evento->categoria_id === "2") {
-                $eventos_formateados['conferencias_v'][] = $evento;
+                $eventos_formateados['workshops_v'][] = $evento;
             }
             // Día sábado categoría workshops
             if($evento->dia_id === "2" && $evento->categoria_id === "2") {
-                $eventos_formateados['conferencias_s'][] = $evento;
+                $eventos_formateados['workshops_s'][] = $evento;
             }
         }
         debuguear($eventos_formateados);
