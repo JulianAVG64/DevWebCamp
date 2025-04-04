@@ -23,6 +23,12 @@
     &__enlace {
         @include m.enlace;
     }
+    &__form {
+        display: flex;
+    }
+    &__submit {
+        @extend .header__enlace;
+    }
     &__contenido {
         padding: 10rem;
         @include m.tablet {
