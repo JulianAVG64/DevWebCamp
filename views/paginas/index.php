@@ -110,19 +110,19 @@ include_once __DIR__ . '/conferencias.php';
     <p class="boletos__descripcion">Precios para DevWebCamp</p>
 
     <div class="boletos__grid">
-        <div <?php aos_animation(); ?> class="boleto boleto--presencial">
+        <div data-aos="flip-left" class="boleto boleto--presencial">
             <h4 class="boleto__logo">&#60;DevWebCamp /></h4>
             <p class="boleto__plan">Presencial</p>
             <p class="boleto__precio">$199</p>
         </div>
 
-        <div <?php aos_animation(); ?> class="boleto boleto--virtual">
+        <div data-aos="flip-right" class="boleto boleto--virtual">
             <h4 class="boleto__logo">&#60;DevWebCamp /></h4>
             <p class="boleto__plan">Virtual</p>
             <p class="boleto__precio">$49</p>
         </div>
 
-        <div <?php aos_animation(); ?> class="boleto boleto--gratis">
+        <div data-aos="flip-up" class="boleto boleto--gratis">
             <h4 class="boleto__logo">&#60;DevWebCamp /></h4>
             <p class="boleto__plan">Gratis</p>
             <p class="boleto__precio">Gratis - $0</p>
