@@ -83,4 +83,37 @@ class RegistroController {
             'registro' => $registro
         ]);
     }
+
+    // API para pago presencial
+    public static function pagar(Router $router) {
+
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if(!is_auth()) {
+                header('Location: /login');
+            }
+
+            // Validar que Post no venga vacio
+            if(empty($_POST)) {
+                echo json_encode([]);
+                return;
+            }
+
+            // Cear el registro
+            
+            $datos = $_POST;
+            // Generar codigo del registro
+            $datos['token'] = substr( md5( uniqid( rand(), true)), 0, 8 );
+            $datos['usuario_id'] = $_SESSION['id'];
+
+            try {
+                $registro = new Registro($datos);
+                $resultado = $registro->guardar();
+                echo json_encode($resultado);
+            } catch (\Throwable $th) {
+                echo json_encode([
+                    'resultado' => 'error'
+                ]);
+            }
+        }
+    }
 }
