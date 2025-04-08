@@ -2,10 +2,15 @@
 
 namespace Controllers;
 
-use Model\Paquete;
-use Model\Registro;
-use Model\Usuario;
+use Model\Dia;
+use Model\Hora;
 use MVC\Router;
+use Model\Evento;
+use Model\Paquete;
+use Model\Ponente;
+use Model\Usuario;
+use Model\Registro;
+use Model\Categoria;
 
 class RegistroController {
 
@@ -115,5 +120,55 @@ class RegistroController {
                 ]);
             }
         }
+    }
+
+    public static function conferencias(Router $router) {
+
+        if(!is_auth()) {
+            header('Location: /login');
+        }
+
+        // Validar que el usuario tenga el plan presencial
+        $usuario_id = $_SESSION['id'];
+        $registro = Registro::where('usuario_id', $usuario_id);
+
+        if($registro->paquete_id !== "1") {
+            header('Location: /');
+        }
+
+        // Obtener todos los eventos
+        $eventos = Evento::ordenar('hora_id', 'ASC');
+
+        $eventos_formateados = [];
+        foreach($eventos as $evento) {
+            // Cruzar información del modelo para traer las tablas relacionadas
+            $evento->categoria = Categoria::find($evento->categoria_id);
+            $evento->dia = Dia::find($evento->dia_id);
+            $evento->hora = Hora::find($evento->hora_id);
+            $evento->ponente = Ponente::find($evento->ponente_id);
+
+            // Día viernes categoría conferencias
+            if($evento->dia_id === "1" && $evento->categoria_id === "1") {
+                $eventos_formateados['conferencias_v'][] = $evento;
+            }
+            // Día sábado categoría conferencias
+            if($evento->dia_id === "2" && $evento->categoria_id === "1") {
+                $eventos_formateados['conferencias_s'][] = $evento;
+            }
+
+            // Día viernes categoría workshops
+            if($evento->dia_id === "1" && $evento->categoria_id === "2") {
+                $eventos_formateados['workshops_v'][] = $evento;
+            }
+            // Día sábado categoría workshops
+            if($evento->dia_id === "2" && $evento->categoria_id === "2") {
+                $eventos_formateados['workshops_s'][] = $evento;
+            }
+        }
+
+        $router->render('registro/conferencias', [
+            'titulo' => 'Elige Workshops y Conferencias',
+            'eventos' => $eventos_formateados
+        ]);
     }
 }
