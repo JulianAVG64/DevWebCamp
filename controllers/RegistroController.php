@@ -191,6 +191,7 @@ class RegistroController {
                 return;
             }
 
+            $eventos_array = [];
             // Validar la diponibilidad de los eventos seleccionados
             foreach($eventos as $evento_id) {
                 $evento = Evento::find($evento_id);
@@ -201,8 +202,15 @@ class RegistroController {
                     return;
                 }
 
+                $eventos_array[] = $evento;
+            }
+
+            // Volver a iterar sobre los registros para restar 1 a la disponibilidad, !ESTO SIMULA UNA TRANSACCIÓN¡
+            foreach($eventos_array as $evento) {
                 $evento->disponibles -= 1;
-                debuguear($evento);
+                $evento->guardar();
+
+                // Almacenar el registro
             }
         }
 
