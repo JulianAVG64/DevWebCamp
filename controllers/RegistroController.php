@@ -28,7 +28,7 @@ class RegistroController {
             header('Location: /boleto?id=' . urlencode($registro->token));
         }
 
-        if($registro->paquete_id === "1") {
+        if(isset($registro) && $registro->paquete_id === "1") {
             header('Location: /finalizar-registro/conferencias');
         }
 
@@ -143,7 +143,7 @@ class RegistroController {
         }
 
         // Redireccionar a boleto virtual en caso de ya haber finalizado su registro
-        if(isset($registro->regalo_id)) {
+        if($registro->regalo_id !== "0") {
             header('Location: /boleto?id=' . urlencode($registro->token));
         }
 
