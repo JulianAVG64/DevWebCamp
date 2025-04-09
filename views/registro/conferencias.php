@@ -50,7 +50,7 @@
             <select id="regalo" class="registro__select">
                 <option value="">-- Selecciona tu regalo --</option>
                 <?php foreach($regalos as $regalo) { ?>
-                    <option value="<?php echo $regalo->id; ?><"><?php echo $regalo->nombre; ?></option>
+                    <option value="<?php echo $regalo->id; ?>"><?php echo $regalo->nombre; ?></option>
                 <?php } ?>
             </select>
         </div>
